@@ -15,7 +15,7 @@ const (
 	outputFilename = "cotacao.txt"
 )
 
-func fetchCotacao(ctx context.Context) (string, error) {
+func fetchCotacaoByServer(ctx context.Context) (string, error) {
 	client := http.Client{Timeout: clientTimeout}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, serverURL, nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func fetchCotacao(ctx context.Context) (string, error) {
 	return bid, nil
 }
 
-func saveToFile(bid string) error {
+func saveCotacaoToFile(bid string) error {
 	content := fmt.Sprintf("Dólar: %s", bid)
 	return os.WriteFile(outputFilename, []byte(content), 0644)
 }
@@ -45,13 +45,13 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), clientTimeout)
 	defer cancel()
 
-	cotacao, err := fetchCotacao(ctx)
+	cotacao, err := fetchCotacaoByServer(ctx)
 	if err != nil {
-		fmt.Println("Erro ao obter cotação:", err)
+		fmt.Println("Erro ao obter cotação do servidor:", err)
 		return
 	}
 
-	if err := saveToFile(cotacao); err != nil {
+	if err := saveCotacaoToFile(cotacao); err != nil {
 		fmt.Println("Erro ao salvar no arquivo:", err)
 		return
 	}

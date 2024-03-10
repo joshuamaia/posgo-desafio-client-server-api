@@ -73,7 +73,19 @@ func main() {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS cotacoes (id INTEGER PRIMARY KEY, valor REAL)")
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS cotacoes 
+	(id INTEGER PRIMARY KEY, 
+	code TEXT, 
+	codein TEXT, 
+	name TEXT,
+	high TEXT, 
+	low TEXT, 
+	varBid TEXT, 
+	pctChange TEXT, 
+	bid TEXT, 
+	ask TEXT, 
+	timestamp TEXT, 
+	create_date TEXT)`)
 	if err != nil {
 		log.Fatal(err)
 	}
